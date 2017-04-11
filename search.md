@@ -17,7 +17,7 @@ curl -X POST ${ES_URL}/level/demo -d '{ "level": "Foo" }'
 In the first query we will list log category levels and document counts of both fields:
 
 ````javascript
-// content of categories.json
+// content of categories.json file
 {
   "size": 0,
   "aggs": {
@@ -105,7 +105,7 @@ For example the following query should not yield any data if data transformation
 If it yields data then we should investigate (broken rules?), maybe we just need to reindex data.
 
 ````javascript
-// content of check.json
+// content of check.json file
 {
   "query": {
     "bool": {
