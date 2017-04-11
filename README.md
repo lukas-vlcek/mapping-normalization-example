@@ -52,12 +52,22 @@ to Elasticsearch.
              +-----------------+
 ````
 
-The question is where the log level categories are **normalized**
-to common scale unified by the data model.
+**The question is:**
+ Where the log level categories should be **normalized**
+to common scale unified by the data model? Basically, there are two options:
 
-One option it to handle log level normalization in every **Log collector**
+1. One option it to handle log level normalization in every **Log collector**
 or in **Log aggregator**.
 
-Other option is to handle log level normalization **in Elasticsearch during indexing**.
-The following text focuses only on the later option. In the end we discuss and compare
-some of the pros and cons of both options.
+2. Other option is to handle log level normalization **in Elasticsearch during indexing**.
+
+The following text focuses only on the later option.
+
+## Motivation
+
+The main motivation to investigate the later option: 
+
+- implement data normalizations as part of the data model
+- easy identification of missing rules or unexpected results of data transformation
+- if data model is changed and/or if the data transformations are updated it should
+  be easier re-calculate the data in central storage
