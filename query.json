@@ -1,0 +1,28 @@
+{
+  "_source": true,
+  "fielddata_fields" : [
+    "level_normalized",
+    "level"
+  ],
+  "script_fields": {
+    "level_script": {
+      "script": {
+        "inline": "doc['level']"
+      }
+    },
+    "level_normalized_script": {
+      "script": {
+        "inline": "doc['level_normalized']"
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": {
+        "script": {
+          "script": "doc['level'].value != doc['level_normalized'].value"
+        }
+      }
+    }
+  }
+}

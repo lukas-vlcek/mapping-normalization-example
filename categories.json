@@ -1,0 +1,11 @@
+{
+  "size": 0,
+  "aggs": {
+    "levels": {
+      "terms": { "field": "level" }
+    },
+    "levels_normalized": {
+      "terms": { "field": "level_normalized" }
+    }
+  }
+}

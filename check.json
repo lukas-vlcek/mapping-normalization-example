@@ -1,0 +1,19 @@
+{
+  "query": {
+    "bool": {
+      "must": {
+        "term": { "level_normalized": "WARN" }
+      },
+      "must_not": {
+        "bool": {
+          "should": [
+            { "term": { "level": "WARN" } },
+            { "term": { "level": "warn" } },
+            { "term": { "level": "ERR" } },
+            { "term": { "level": "err" } }
+          ]
+        }
+      }
+    }
+  }
+}

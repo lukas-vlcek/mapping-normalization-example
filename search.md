@@ -12,7 +12,9 @@ curl -X POST ${ES_URL}/level/demo -d '{ "level": "err" }'
 curl -X POST ${ES_URL}/level/demo -d '{ "level": "Foo" }'
 ````
 
-In the first query we will list log category levels of both fields:
+## Check for level category counts
+
+In the first query we will list log category levels and document counts of both fields:
 
 ````shell
 curl -X GET "${ES_URL}/level/_search?pretty" -d '{
@@ -67,8 +69,8 @@ However, when similar aggregation is run against normalized field `level_normali
   "levels_normalized" : {
     ...
     "buckets" : [ {
-      "key" : "WARN",
-      "doc_count" : 4
+      "key" : "WARN",  // << category name
+      "doc_count" : 4  // << document count
     }, {
       "key" : "UNEXPECTED",
       "doc_count" : 1
@@ -87,3 +89,41 @@ category and one document was assigned `UNEXPECTED` category:
 | ERR | WARN |
 | err | WARN |
 | Foo | UNEXPECTED |
+
+## Check for incorrect transformations
+
+Having two separate fields with original and normalized value allows for simple
+identification of incorrect transformations.
+ 
+For example the following query should not yield any data if data transformation works correctly.
+If it yields data then we should investigate (broken rules?), maybe we just need to reindex data.
+
+````javascript
+{
+  "query": {
+    "bool": {
+      "must": {
+        "term": { "level_normalized": "WARN" }
+      },
+      "must_not": {
+        "bool": {
+          "should": [
+            { "term": { "level": "WARN" } },
+            { "term": { "level": "warn" } },
+            { "term": { "level": "ERR" } },
+            { "term": { "level": "err" } }
+          ]
+        }
+      }
+    }
+  }
+}
+````
+
+## Getting individual documents
+
+````shell
+curl -X GET "${ES_URL}/level/_search?pretty" -d@query.json
+````
+
+You can use provided [`index_and_search.sh`](index_and_search.sh) script.
