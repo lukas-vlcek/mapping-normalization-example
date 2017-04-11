@@ -1,6 +1,6 @@
 # mapping-normalization-example
 
-This repository is to discuss and demonstrate "mapping-analysis" based approach
+This repository is to discuss and demonstrate Elasticsearch mapping and analysis based approach
 to normalization of document fields. Namely the log level field.
 
 _Strictly speaking some of the low level details can have performance impact thus this it is
@@ -13,10 +13,10 @@ When collecting and indexing logs from distributed system into central search en
 it is very important and useful to deploy **data model**
 (such as [ViaQ/elasticsearch-templates](https://github.com/ViaQ/elasticsearch-templates)).
 In context of logging, one of the most important document fields is the **log level field**. 
-Every log record has it. The problem is that every system that produces logs can use different
+Every log record has it. The challenge is that every system that produces logs can use different
 log categories.
 
-Assuming logs are collected by light-weight log collectors that ship the logs either 
+Assuming logs are collected by light-weight **log collectors** that ship the logs either 
   to Elasticsearch directly ...
    
 ````
@@ -32,7 +32,7 @@ Assuming logs are collected by light-weight log collectors that ship the logs ei
              |                 |
              +-----------------+
 ````
-... or they ship logs to one or more log aggregators first and then logs are sent
+... or they ship logs to one or more **log aggregators** first and then logs are sent
 to Elasticsearch.
 ````
  +-----------------+     +-----------------+
@@ -61,13 +61,22 @@ or in **Log aggregator**.
 
 2. Other option is to handle log level normalization **in Elasticsearch during indexing**.
 
-The following text focuses only on the later option.
+The following text investigates the later option only.
 
 ## Motivation
 
 The main motivation to investigate the later option: 
 
 - implement data normalizations as part of the data model
-- easy identification of missing rules or unexpected results of data transformation
+- easy identification of missing rules or unexpected data transformation results 
 - if data model is changed and/or if the data transformations are updated it should
-  be easier re-calculate the data in central storage
+  be easier deploy new code and re-calculate historical data already stored in central
+  place
+
+## Goals
+
+- provide implementation guidelines and examples
+- investigate pros and cons wrt:
+  - side-effects
+  - performance
+  - vendor lock-in
