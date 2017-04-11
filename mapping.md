@@ -19,7 +19,7 @@ use the following mapping:
 
 Since this field will contain the original log level value we will introduce another
  field to contain the normalized value: `level_normalized` and we will copy the original
- value to it.
+ value to it (we configure this directly in mapping).
  
 ````javascript
 "level": {
@@ -48,11 +48,11 @@ _To learn more about Lucene text analysis concepts you can read [sample chapter]
 
 "level_normalized": {
   "type": "string",
-  "analyzer": "level_normalization" // << add analysis
+  "analyzer": "level_normalization" // << setup field analyzer
 }
  ````
    
-We define custom analyzer `level_normalization`:
+And we define this analyzer `level_normalization`:
    
 ````javascript
 "analysis": {
@@ -81,7 +81,7 @@ we want to implement transformation rule: `"ERR" -> "WARN"`.
     }
   },
   "filter": {
-    "level_synonyms": { // << configure synonym filter
+    "level_synonyms": { // << configure synonym token filter
       "type": "synonym",
       "synonyms": [
         "ERR=>WARN"  // << we can add more rules if needed
@@ -110,7 +110,7 @@ level categories and translate them to common `UNEXPECTED` category:
         "ERR=>WARN"
       ]
     },
-    "catch_new_levels": { // << configure pattern replace filter
+    "catch_new_levels": { // << configure pattern replace token filter
       "type": "pattern_replace",
       "pattern": "^(?!(DEBUG|INFO|WARN|ERROR|FATAL)).*$",
       "replacement": "UNEXPECTED"
@@ -121,6 +121,8 @@ level categories and translate them to common `UNEXPECTED` category:
 The pattern replace token filter is configured in such way that all values
 that DO NOT start with one of `DEBUG|INFO|WARN|ERROR|FATAL` is replaced with
 `UNEXPECTED` token.
+
+In fact we are specifying all acceptable log level options here as well.
 
 We are done with mappings.
 
