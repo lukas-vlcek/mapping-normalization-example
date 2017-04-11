@@ -26,4 +26,4 @@ curl -X GET "${ES_URL}/level/_search?pretty" -d@check.json
 
 echo "Get raw documents with normalized field"
 echo --------------------------------------------
-curl -X GET "${ES_URL}/level/_search?pretty" -d@query.json
+curl -X GET "${ES_URL}/level/_search?pretty" -d@documents.json

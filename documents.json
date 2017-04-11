@@ -15,14 +15,5 @@
         "inline": "doc['level_normalized']"
       }
     }
-  },
-  "query": {
-    "bool": {
-      "filter": {
-        "script": {
-          "script": "doc['level'].value != doc['level_normalized'].value"
-        }
-      }
-    }
   }
 }

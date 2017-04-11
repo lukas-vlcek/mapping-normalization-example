@@ -20,7 +20,7 @@ Check the following query (see below for more details):
     "level"
   ],
   "_source": true,
-  "script_fields": { // << optional
+  "script_fields": { // << alternative approach
     "level_script": {
       "script": {
         "inline": "doc['level']"
@@ -29,15 +29,6 @@ Check the following query (see below for more details):
     "level_normalized_script": {
       "script": {
         "inline": "doc['level_normalized']"
-      }
-    }
-  },
-  "query": { // << optional
-    "bool": {
-      "filter": {
-        "script": {
-          "script": "doc['level'].value != doc['level_normalized'].value"
-        }
       }
     }
   }
@@ -63,12 +54,7 @@ log level categories and we do not expect `level_normalized` field to be high ca
 ### Optional way how to access and work with fielddata
 
 There are also other alternatives how to get analyzed tokens using [`script_fields`](https://www.elastic.co/guide/en/elasticsearch/reference/2.4/search-request-script-fields.html)
-but that is more expensive and requires enabled scripting.
-
-As shown in the query you can also use analyzed tokens directly in the query (for filtering, aggregating, ... etc)
- using scripting support.
- 
-Again: To get just the source document and normalized level field you do not need to use scripting.  
+but that is more expensive and requires enabled scripting.  
 
 That's it. We are in the end.
 
