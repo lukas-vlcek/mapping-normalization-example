@@ -51,6 +51,11 @@ log level categories and we do not expect `level_normalized` field to be high ca
 
 **TODO:** The real impact of accessing fielddata in case of `level_normalized` field should be properly measured.
 
+Notice: Starting with ES 5.x `fielddata_fields` has been replaced with
+[`docvalue_fields`](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-docvalue-fields.html)
+but under the hood it is [falling back to fielddata](https://www.elastic.co/guide/en/elasticsearch/reference/current/doc-values.html) in case of analyzed string fields.
+
+
 ### Alternative way how to access fielddata
 
 There are also other alternatives how to get analyzed tokens using [`script_fields`](https://www.elastic.co/guide/en/elasticsearch/reference/2.4/search-request-script-fields.html)
