@@ -12,7 +12,7 @@ curl -X POST ${ES_URL}/level/demo -d '{ "level": "err" }'
 curl -X POST ${ES_URL}/level/demo -d '{ "level": "Foo" }'
 ````
 
-In the first query we will check number of documents found in both levels:
+In the first query we will list log category levels of both fields:
 
 ````shell
 curl -X GET "${ES_URL}/level/_search?pretty" -d '{
@@ -29,8 +29,8 @@ curl -X GET "${ES_URL}/level/_search?pretty" -d '{
 ````
 
 The [terms aggregation](https://www.elastic.co/guide/en/elasticsearch/reference/2.4/search-aggregations-bucket-terms-aggregation.html)
-gives us number of documents per unique field category (it is equivalent to DB's `GROUP BY` function).
-Notice we will run two aggregations, first against the original `level` field and second against `level_normalized` field.
+gives us number of documents per unique field category (it is equivalent to SQL `GROUP BY` function).
+Notice run two aggregations, first against the original `level` field and second against `level_normalized` field.
 
 We get the following outputs (truncated):
 
@@ -39,6 +39,7 @@ For the original `level` field we get (as expected) five distinct categories, ea
 ````javascript
 "aggregations" : {
   "levels" : {
+    ...  
     "buckets" : [ {
       "key" : "ERR",   // << category name
       "doc_count" : 1  // << document count
@@ -64,6 +65,7 @@ However, when similar aggregation is run against normalized field `level_normali
 ````javascript
 "aggregations" : {
   "levels_normalized" : {
+    ...
     "buckets" : [ {
       "key" : "WARN",
       "doc_count" : 4
@@ -75,4 +77,13 @@ However, when similar aggregation is run against normalized field `level_normali
 }
 ````
 This means that if dashboards (like Kibana or Graphana) are run against the normalized
-field we will get expected results.
+field we will get expected results. We can see that four document were assigned the `WARN`
+category and one document was assigned `UNEXPECTED` category:
+
+| Original level | Normalized level |
+|----------------|------------------|
+| WARN | WARN |
+| warn | WARN |
+| ERR | WARN |
+| err | WARN |
+| Foo | UNEXPECTED |
