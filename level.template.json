@@ -1,0 +1,61 @@
+{
+  "template": "level*",
+  "order": 10,
+
+  "settings": {
+
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+
+    "analysis": {
+
+      "filter": {
+        "level_synonyms": {
+          "type": "synonym",
+          "synonyms": [
+            "ERR=>WARN"
+          ]
+        },
+        "catch_new_levels": {
+          "type": "pattern_replace",
+          "pattern": "^(?!(DEBUG|INFO|WARN|ERROR|FATAL)).*$",
+          "replacement": "UNEXPECTED"
+        }
+      },
+
+      "analyzer": {
+        "level_normalization": {
+          "type": "custom",
+          "tokenizer": "keyword",
+          "filter": ["uppercase", "trim", "level_synonyms", "catch_new_levels"]
+        }
+      }
+
+    }
+  },
+
+  "mappings": {
+
+    "_default_": {
+      "_all": { "enabled": false },
+      "properties": {
+
+        "level": {
+          "type": "string",
+          "store": true,
+          "index": "not_analyzed",
+          "copy_to": "level_normalized"
+        },
+
+        "level_normalized": {
+          "type": "string",
+          "ignore_above": 10,
+          "store": false,
+          "analyzer": "level_normalization"
+        }
+
+      }
+    }
+
+  }
+}

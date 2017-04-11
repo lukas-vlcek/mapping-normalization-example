@@ -69,7 +69,7 @@ The main motivation to investigate the later option:
 
 - implement data normalizations as part of the data model
 - easy identification of missing rules or unexpected data transformation results 
-- if data model is changed and/or if the data transformations are updated it should
+- if data model is changed and/or if the data transformations need to be updated it should
   be easier deploy new code and re-calculate historical data already stored in central
   place
 
@@ -78,5 +78,9 @@ The main motivation to investigate the later option:
 - provide implementation guidelines and examples
 - investigate pros and cons wrt:
   - side-effects
-  - performance
+  - performance impact
   - vendor lock-in
+  
+## Content
+
+- [Setup Elasticsearch mapping](mapping.md)
