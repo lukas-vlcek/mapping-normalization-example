@@ -1,16 +1,16 @@
 ## Getting documents including normalized values
 
-Besides querying the data for the needs to dashboards (which are mostly driven by aggregations)
+Besides querying the data for the needs of dashboards (which are mostly driven by aggregations)
 it is often required to get the full content of original documents (for example to populate data
-table in the UI). 
+table in the UI or to export the data to different data store). 
 
-When getting the data from Elasticsearch what you get back is the original `_source` document.
+When getting the data from Elasticsearch what you get back is by default the original `_source` document.
 This means the document that has been sent to Elasticsearch for indexing.
 
-The issue at this point is that the original `_source` document does not contain the `level_normalized`
+The issue at this point is that the original `_source` document **does not contain** the `level_normalized`
 field. However, this field is part of Elasticsearch store now and there are ways how to retrieve it.
 
-Check the following query (see below for more details):
+Check the following query:
 
 ````javascript
 // content of documents.json file
@@ -51,7 +51,7 @@ log level categories and we do not expect `level_normalized` field to be high ca
 
 **TODO:** The real impact of accessing fielddata in case of `level_normalized` field should be properly measured.
 
-### Optional way how to access and work with fielddata
+### Alternative way how to access fielddata
 
 There are also other alternatives how to get analyzed tokens using [`script_fields`](https://www.elastic.co/guide/en/elasticsearch/reference/2.4/search-request-script-fields.html)
 but that is more expensive and requires enabled scripting.  
