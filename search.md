@@ -16,19 +16,25 @@ curl -X POST ${ES_URL}/level/demo -d '{ "level": "Foo" }'
 
 In the first query we will list log category levels and document counts of both fields:
 
-````shell
-curl -X GET "${ES_URL}/level/_search?pretty" -d '{
+````javascript
+// content of categories.json
+{
   "size": 0,
   "aggs": {
     "levels": {
-      "terms": { "field": "level" } 
+      "terms": { "field": "level" }
     },
     "levels_normalized": {
       "terms": { "field": "level_normalized" }
     }
   }
-}'
+}
 ````
+To run the query use:
+````shell
+curl -X GET "${ES_URL}/level/_search?pretty" -d@categories.json
+````
+
 
 The [terms aggregation](https://www.elastic.co/guide/en/elasticsearch/reference/2.4/search-aggregations-bucket-terms-aggregation.html)
 gives us number of documents per unique field category (it is equivalent to SQL `GROUP BY` function).
@@ -99,6 +105,7 @@ For example the following query should not yield any data if data transformation
 If it yields data then we should investigate (broken rules?), maybe we just need to reindex data.
 
 ````javascript
+// content of check.json
 {
   "query": {
     "bool": {
@@ -119,11 +126,11 @@ If it yields data then we should investigate (broken rules?), maybe we just need
   }
 }
 ````
-
-## Getting individual documents
-
+To run the query use:
 ````shell
-curl -X GET "${ES_URL}/level/_search?pretty" -d@query.json
+curl -X GET "${ES_URL}/level/_search?pretty" -d@check.json
 ````
 
-You can use provided [`index_and_search.sh`](index_and_search.sh) script.
+## Follow up
+
+- [Get documents](documents.md) including normalized values

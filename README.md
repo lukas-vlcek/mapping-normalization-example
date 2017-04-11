@@ -70,7 +70,7 @@ The main motivation to investigate the later option:
 - implement data normalizations as part of the data model
 - easy identification of missing rules or unexpected data transformation results 
 - if data model is changed and/or if the data transformations need to be updated it should
-  be easier deploy new code and re-calculate historical data already stored in central
+  be easier to deploy new code and re-calculate historical data already stored in central
   place
 
 ## Goals
@@ -85,3 +85,4 @@ The main motivation to investigate the later option:
 
 - [Setup Elasticsearch mapping](mapping.md)
 - [Index and search](search.md) sample data
+- [Get documents](documents.md) including normalized values
