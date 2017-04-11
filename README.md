@@ -84,3 +84,4 @@ The main motivation to investigate the later option:
 ## Content
 
 - [Setup Elasticsearch mapping](mapping.md)
+- [Index and search](search.md) sample data

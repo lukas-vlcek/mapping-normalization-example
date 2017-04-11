@@ -125,10 +125,21 @@ that DO NOT start with one of `DEBUG|INFO|WARN|ERROR|FATAL` is replaced with
 We are done with mappings.
 
 See [`level.template.json`](level.template.json) file
-for complete index template file. We will use it shortly.
+for complete index template file.
+
+Before reading next chapter make sure the index
+template has been push to Elasticsearch:
+
+`curl -X POST http://localhost:9200/_template/level -d@./level.template.json`
+
+You can also use [`push_template.sh`](push_template.sh) script.
 
 ## Lock-in check:
 
 - `synonym`, `pattern_replace` token filters are found in Lucene and exposed by tools build
   on top of it. For example [Solr expose them](https://wiki.apache.org/solr/AnalyzersTokenizersTokenFilters) too.
 - `copy_to` field is not Elasticsearch specific, [Solr provides it](https://cwiki.apache.org/confluence/display/solr/Copying+Fields) too.
+
+## Follow up
+
+- [Index and search](search.md) sample data
