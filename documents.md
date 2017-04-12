@@ -45,15 +45,16 @@ using `"_source": true` (if you ask for `fielddata_fields` then the _source is n
 ### Performance implications
 
 Accessing [fielddata](https://www.elastic.co/guide/en/elasticsearch/reference/2.4/fielddata.html) is
-notoriously known to be expensive in terms of increased JVM Heap usage. It can be source of scaling issues.
+notoriously known to be expensive in terms of increased JVM Heap usage (leading to expensive GC). It can be source of scaling issues.
 However, it is important to understand that in this case there are expected only few distinct
-log level categories and we do not expect `level_normalized` field to be high cardinality field.
+log level categories (20-30?) and we do not expect `level_normalized` field to be high cardinality field.
 
 **TODO:** The real impact of accessing fielddata in case of `level_normalized` field should be properly measured.
 
 Notice: Starting with ES 5.x `fielddata_fields` has been replaced with
 [`docvalue_fields`](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-docvalue-fields.html)
-but under the hood it is [falling back to fielddata](https://www.elastic.co/guide/en/elasticsearch/reference/current/doc-values.html) in case of analyzed string fields.
+to avoid JVM Heap issues but in case of **analyzed string fields**
+it is [falling back to fielddata](https://www.elastic.co/guide/en/elasticsearch/reference/current/doc-values.html).
 
 
 ### Alternative way how to access fielddata
