@@ -42,6 +42,31 @@ query option to retrieve the tokens that are result of analysis process from Luc
 Then if you want to get the rest of the document fields you can ask for source by
 using `"_source": true` (if you ask for `fielddata_fields` then the _source is not provided by default).
 
+To run the [`documents.json`](documents.json) query use:
+
+````shell
+curl -X GET "${ES_URL}/level/_search?pretty" -d@documents.json
+````
+This will give us individual documents with normalized fields:
+
+````javascript
+"hits" : [
+    {
+        ...
+        "_source" : {
+            "level" : "err" // << original document value
+        },
+        "fields" : {
+            "level_normalized" : [ "WARN" ], // << normalized value from fielddata
+            "level_normalized_script" : [ "WARN" ], // the same but retrieved using script
+            "level_script" : [ "err" ],
+            "level" : [ "err" ]
+        }
+    }
+    ...
+]
+````
+
 ### Performance implications
 
 Accessing [fielddata](https://www.elastic.co/guide/en/elasticsearch/reference/2.4/fielddata.html) is
@@ -63,9 +88,3 @@ There are also other alternatives how to get analyzed tokens using [`script_fiel
 but that is more expensive and requires enabled scripting.  
 
 That's it. We are in the end.
-
-To run the [`documents.json`](documents.json) query use:
-
-````shell
-curl -X GET "${ES_URL}/level/_search?pretty" -d@documents.json
-````
