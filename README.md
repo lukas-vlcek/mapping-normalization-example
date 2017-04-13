@@ -3,10 +3,6 @@
 This repository is to discuss and demonstrate Elasticsearch mapping and analysis based approach
 to normalization of document fields. Namely the log level field.
 
-_Strictly speaking some of the low level details can have performance impact thus this it is
-worth mentioning that this demonstration was designed for **Elasticsearch 2.4.x** assuming
-certain conditions are met, read below for more details._
-
 ## Introduction
 
 When collecting and indexing logs from distributed system into central search engine (like Elasticsearch)

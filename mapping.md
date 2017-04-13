@@ -16,6 +16,7 @@ use the following mapping:
   "index": "not_analyzed"
 }
 ````
+The field is not analyzed because it is a keyword - in this case it is a **category name**.
 
 Since this field will contain the original log level value we will introduce another
  field to contain the normalized value: `level_normalized` and we will copy the original
@@ -34,7 +35,7 @@ Since this field will contain the original log level value we will introduce ano
  ````
 
 Now, we need to normalize the value. The core idea of data normalization is careful application
-of basic building blocks of what makes every full text search shine - text analysis.
+of basic building blocks of what makes every full text search shine - **text analysis**.
 
 _To learn more about Lucene text analysis concepts you can read [sample chapter](https://manning-content.s3.amazonaws.com/download/5/fd7e90e-a06e-44ea-b697-4a3837747dcb/sample_ch05_Gheorghe_Elasticsearch_November12.pdf)
    from "Elasticsearch in Action" book (Manning 2015, ISBN 9781617291623)._
@@ -129,7 +130,7 @@ We are done with mappings.
 See [`level.template.json`](level.template.json) file
 for complete index template file.
 
-Before reading next chapter make sure the index
+If you will want to run examples found in the next chapter make sure the index
 template has been push to Elasticsearch:
 
 `curl -X POST http://localhost:9200/_template/level -d@./level.template.json`

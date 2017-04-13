@@ -16,11 +16,11 @@ Check the following query:
 // content of documents.json file
 {
   "fielddata_fields" : [
-    "level_normalized",
+    "level_normalized", // << get data for normalized field
     "level"
   ],
-  "_source": true,
-  "script_fields": { // << alternative approach
+  "_source": true, // << also get the original document
+  "script_fields": { // << alternative approach to get normalized data
     "level_script": {
       "script": {
         "inline": "doc['level']"
@@ -74,7 +74,7 @@ notoriously known to be expensive in terms of increased JVM Heap usage (leading 
 However, it is important to understand that in this case there are expected only few distinct
 log level categories (20-30?) and we do not expect `level_normalized` field to be high cardinality field.
 
-**TODO:** The real impact of accessing fielddata in case of `level_normalized` field should be properly measured.
+**TODO:** The real impact of accessing fielddata in case of `level_normalized` field should be tested.
 
 Notice: Starting with ES 5.x `fielddata_fields` has been replaced with
 [`docvalue_fields`](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-docvalue-fields.html)
@@ -84,7 +84,7 @@ it is [falling back to fielddata](https://www.elastic.co/guide/en/elasticsearch/
 
 ### Alternative way how to access fielddata
 
-There are also other alternatives how to get analyzed tokens using [`script_fields`](https://www.elastic.co/guide/en/elasticsearch/reference/2.4/search-request-script-fields.html)
+As seen in the query there are also other alternatives how to get analyzed tokens using [`script_fields`](https://www.elastic.co/guide/en/elasticsearch/reference/2.4/search-request-script-fields.html)
 but that is more expensive and requires enabled scripting.  
 
 That's it. We are in the end.

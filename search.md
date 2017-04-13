@@ -14,7 +14,7 @@ curl -X POST ${ES_URL}/level/demo -d '{ "level": "Foo" }'
 
 ## Check for level category counts
 
-In the first query we will list log category levels and document counts of both fields `level` and `level_normalized`:
+We can use query (with aggregations) to list log category levels and document counts for both fields `level` and `level_normalized`:
 
 ````javascript
 // content of categories.json file
@@ -30,7 +30,7 @@ In the first query we will list log category levels and document counts of both 
   }
 }
 ````
-To run the query use:
+To run the [`categories.json`](categories.json) query use:
 ````shell
 curl -X GET "${ES_URL}/level/_search?pretty" -d@categories.json
 ````
@@ -102,7 +102,9 @@ Having two separate fields with original and normalized value allows for simple
 identification of incorrect transformations.
  
 For example the following query should not yield any data if data transformation works correctly.
-If it yields data then we should investigate (broken rules?), maybe we just need to reindex data.
+It will lists all documents that has `WARN` normalized level field and at the same time the original
+`level` field contains one of `WARN|warn|ERR|err` values.
+If it yields data then we should investigate (broken rules?), maybe we just need to update the rules and reindex data.
 
 ````javascript
 // content of check.json file
@@ -126,11 +128,12 @@ If it yields data then we should investigate (broken rules?), maybe we just need
   }
 }
 ````
-To run the query use:
+To run the [`check.json`](check.json) query use:
 ````shell
 curl -X GET "${ES_URL}/level/_search?pretty" -d@check.json
 ````
-And we can be really creative about creating other queries to check data and transformation integrity.
+This was just one example of using queries to check data and transformation integrity. A lot more different checks
+can be implemented.
 
 ## Follow up
 
